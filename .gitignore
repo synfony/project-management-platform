@@ -1,0 +1,21 @@
+## Build output
+bin/
+obj/
+
+## .NET
+*.user
+*.suo
+.vs/
+
+## Database (local only)
+*.db
+*.db-shm
+*.db-wal
+
+## Environment / secrets
+appsettings.Local.json
+.env
+
+## OS
+.DS_Store
+Thumbs.db
