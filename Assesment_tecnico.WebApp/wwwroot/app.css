@@ -1,0 +1,52 @@
+@import url('bootstrap/bootstrap.min.css');
+
+html, body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+h1:focus {
+    outline: none;
+}
+
+a, .btn-link {
+    color: #0071c1;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+.content {
+    padding-top: 1.1rem;
+}
+
+#blazor-error-ui {
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }
+
+.blazor-error-boundary {
+    background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTYiIGhlaWdodD0iNDkiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIG92ZXJmbG93PSJoaWRkZW4iPjxkZWZzPjxjbGlwUGF0aCBpZD0iY2xpcDAiPjxyZWN0IHg9IjIzNSIgeT0iNTEiIHdpZHRoPSI1NiIgaGVpZ2h0PSI0OSIvPjwvY2xpcFBhdGg+PC9kZWZzPjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMCkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0yMzUgLTUxKSI+PHBhdGggZD0iTTI2My41MDYgNTFDMjY0LjcxNyA1MSAyNjUuODEzIDUxLjQ4MzcgMjY2LjYwNiA1Mi4yNjU4TDI2Ny4wNTIgNTIuNzk4NyAyNjcuNTM5IDUzLjYyODMgMjkwLjE4NSA5Mi4xODMxIDI5MC41NDUgOTIuNzk1IDI5MC42NTYgOTIuOTk2QzI5MC44NzcgOTMuNTEzIDI5MS4wNTggOTQuMDcyIDI5MS4wNTggOTQuNjk1QzI5MS4wNTggOTUuNzkxIDI5MC42MzYgOTYuNTg1IDI4OS43NDIgOTcuMTkzN0MyODguODQ4IDk3LjgwOTQgMjg3LjU2NyA5OC4wNTQxIDI4Ni4wODQgOTguMDU0MUgyNDAuOTM3QzIzOS40NTQgOTguMDU0MSAyMzguMTczIDk3LjgwOTQgMjM3LjI3OSA5Ny4xOTM3QzIzNi4zODYgOTYuNTg1IDI1LjkyNSA5NS43OTEgMjM1LjkyNSA5NC42OTVDMjM1LjkyNSA5NC4wNzIgMjM2LjEwNiA5My41MTMgMjM2LjMyNyA5Mi45OTZMMjM2LjQzOCA5Mi43OTUgMjM2Ljg4NSA5Mi4xODMxIDI1OS41MzEgNTMuNjI4MyAyNjAuMDIgNTIuNzk4NyAyNjAuNDY2IDUyLjI2NThDMjYxLjI1OSA1MS40ODM3IDI2Mi4zNTUgNTEgMjYzLjUwNiA1MVoiIGZpbGw9IiNGRkU1MDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjxwYXRoIGQ9Ik0yNjMuNTg2IDY2LjAxODNDMjYwLjczNyA2Ni4wMTgzIDI1OS4zMTMgNjcuMTI0NSAyNTkuMzEzIDY5LjMzNyAyNTkuMzEzIDY5LjYxMDIgMjU5LjM2NyA2OS44NjU5IDI1OS40NzMgNzAuMTE4N0wyNjEuNzk1IDg0LjAxNjEgMjY1LjM4IDg0LjAxNjEgMjY3LjgyMSA2OS43NDc1QzI2Ny45MjggNjkuNDgyNyAyNjcuOTgyIDY5LjEyNjYgMjY3Ljk4MiA2OC44NDYxQzI2Ny45ODIgNjcuMTI0NSAyNjYuNTU4IDY2LjAxODMgMjY0LjgyNiA2Ni4wMTgzQzI2NC4wNzYgNjYuMDE4MyAyNjMuNTg2IDY2LjAxODNaTTI2My41NzYgODYuMDU0MUMyNjEuMDQ5IDg2LjA1NDEgMjU5LjM4NiA4Ny4zMjEgMjU5LjM4NiA4OS42NzJD MjU5LjM4NiA5MC44MzcgMjU5LjYxMyA5MS43NTIgMjYwLjA2OCA5Mi40MDNMMjYwLjQ5IDkyLjg2MUMyNjEuMjAyIDkzLjM4OCAyNjIuMTg1IDk0IDI2My41NzYgOTRDMjY0Ljk2NyA5NCAyNjUuOTk2IDkzLjM1NyAyNjYuODgyIDkyLjUwM0wyNjcuMzA1IDkyLjAxN0MyNjcuNzM2IDkxLjM3MyAyNjcuOTg4IDkwLjYxNyAyNjcuOTg4IDg5LjY3MkMyNjcuOTg4IDg3LjMyMSAyNjYuMzI0IDg2LjA1NDEgMjYzLjU3NiA4Ni4wNTQxWiIgZmlsbD0iIzM0MzQzNCIgZmlsbD1ydWxlPSJldmVub2RkIi8+PC9nPjwvc3ZnPg==) no-repeat 1rem/1.8rem, #b32121;
+    padding: 1rem 1rem 1rem 3.7rem;
+    color: white;
+}
+
+    .blazor-error-boundary::after {
+        content: "An error has occurred.";
+    }

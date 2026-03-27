@@ -1,0 +1,19 @@
+@page "/"
+@inject NavigationManager NavigationManager
+
+<AuthorizeView>
+    <Authorized>
+        @{
+            // User is authenticated, redirect to dashboard
+            NavigationManager.NavigateTo("/dashboard");
+        }
+    </Authorized>
+    <NotAuthorized>
+        @{
+            // User is not authenticated, redirect to login
+            NavigationManager.NavigateTo("/login");
+        }
+    </NotAuthorized>
+</AuthorizeView>
+
+<p>Redirecting...</p>

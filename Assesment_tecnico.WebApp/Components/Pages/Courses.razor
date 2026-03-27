@@ -1,0 +1,269 @@
+@page "/courses"
+@using Assesment_tecnico.Shared.Models
+@using System.Net.Http.Json
+@using System.Text.Json
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+
+<PageTitle>Courses</PageTitle>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Courses</h1>
+        <button class="btn btn-primary" @onclick="ShowCreateModal">Create Course</button>
+    </div>
+
+    @if (!string.IsNullOrEmpty(ErrorMessage))
+    {
+        <div class="alert alert-danger">@ErrorMessage</div>
+    }
+
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Search..." @bind="searchTerm" @bind:event="oninput" @onkeyup="Search" />
+        </div>
+        <div class="col-md-3">
+            <select class="form-select" @bind="filterStatus" @bind:after="Search">
+                <option value="">All Statuses</option>
+                <option value="Draft">Draft</option>
+                <option value="Published">Published</option>
+            </select>
+        </div>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var course in courses)
+            {
+                <tr>
+                    <td>@course.Title</td>
+                    <td>
+                        <span class="badge @(course.Status == CourseStatus.Published ? "bg-success" : "bg-secondary")">
+                            @course.Status
+                        </span>
+                    </td>
+                    <td>@course.CreatedAt.ToShortDateString()</td>
+                    <td>
+                        <button class="btn btn-sm btn-info me-1" @onclick="() => EditCourse(course)">Edit</button>
+                        <button class="btn btn-sm btn-warning me-1" @onclick="() => ManageLessons(course.Id)">Lessons</button>
+                        @if (course.Status == CourseStatus.Draft)
+                        {
+                            <button class="btn btn-sm btn-success me-1" @onclick="() => TogglePublish(course.Id, true)">Publish</button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-sm btn-secondary me-1" @onclick="() => TogglePublish(course.Id, false)">Unpublish</button>
+                        }
+                        <button class="btn btn-sm btn-danger" @onclick="() => DeleteCourse(course.Id)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (showModal)
+{
+    <div class="modal fade show d-block" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@modalTitle</h5>
+                    <button type="button" class="btn-close" @onclick="CloseModal"></button>
+                </div>
+                <div class="modal-body">
+                    @if (isEditing)
+                    {
+                        <EditForm Model="@updateModel" OnValidSubmit="SaveCourse">
+                            <DataAnnotationsValidator />
+                            <div class="mb-3">
+                                <label class="form-label">Course Title</label>
+                                <InputText class="form-control" @bind-Value="updateModel.Title" />
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </EditForm>
+                    }
+                    else
+                    {
+                        <EditForm Model="@createModel" OnValidSubmit="SaveCourse">
+                            <DataAnnotationsValidator />
+                            <div class="mb-3">
+                                <label class="form-label">Course Title</label>
+                                <InputText class="form-control" @bind-Value="createModel.CourseTitle" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">First Lesson Title</label>
+                                <InputText class="form-control" @bind-Value="createModel.FirstLessonTitle" />
+                            </div>
+                            <button type="submit" class="btn btn-primary">Create</button>
+                        </EditForm>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade show"></div>
+}
+
+@code {
+    private List<Course> courses = new();
+    private string searchTerm = "";
+    private string filterStatus = "";
+    private bool showModal = false;
+    private string modalTitle = "";
+    private bool isEditing = false;
+    private Guid editingCourseId;
+
+    private CreateCourseWithLessonModel createModel = new();
+    private UpdateCourseModel updateModel = new();
+    
+    private string? ErrorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadCourses();
+    }
+
+    private async Task LoadCourses()
+    {
+        var response = await Http.GetFromJsonAsync<PagedResult<Course>>($"api/courses?q={searchTerm}&status={filterStatus}");
+        if (response != null)
+        {
+            courses = response.Items;
+        }
+    }
+
+    private async Task Search()
+    {
+        await LoadCourses();
+    }
+
+    private void ShowCreateModal()
+    {
+        ErrorMessage = null;
+        isEditing = false;
+        createModel = new();
+        modalTitle = "Create Course";
+        showModal = true;
+    }
+
+    private void EditCourse(Course course)
+    {
+        ErrorMessage = null;
+        isEditing = true;
+        editingCourseId = course.Id;
+        updateModel = new UpdateCourseModel { Title = course.Title };
+        modalTitle = "Edit Course";
+        showModal = true;
+    }
+
+    private void CloseModal()
+    {
+        showModal = false;
+    }
+
+    private async Task SaveCourse()
+    {
+        ErrorMessage = null;
+        HttpResponseMessage response;
+
+        if (isEditing)
+        {
+            response = await Http.PutAsJsonAsync($"api/courses/{editingCourseId}", updateModel);
+        }
+        else
+        {
+            response = await Http.PostAsJsonAsync("api/courses", createModel);
+        }
+
+        if (response.IsSuccessStatusCode)
+        {
+            showModal = false;
+            await LoadCourses();
+        }
+        else
+        {
+            await HandleApiError(response);
+        }
+    }
+
+    private async Task DeleteCourse(Guid courseId)
+    {
+        var response = await Http.DeleteAsync($"api/courses/{courseId}");
+        if (response.IsSuccessStatusCode)
+        {
+            await LoadCourses();
+        }
+        else
+        {
+            await HandleApiError(response);
+        }
+    }
+
+    private async Task TogglePublish(Guid courseId, bool publish)
+    {
+        ErrorMessage = null;
+        var url = publish ? $"api/courses/{courseId}/publish" : $"api/courses/{courseId}/unpublish";
+        var response = await Http.PatchAsync(url, null);
+
+        if (response.IsSuccessStatusCode)
+        {
+            await LoadCourses();
+        }
+        else
+        {
+            await HandleApiError(response);
+        }
+    }
+
+    private void ManageLessons(Guid courseId)
+    {
+        NavigationManager.NavigateTo($"/courses/{courseId}/lessons");
+    }
+
+    private async Task HandleApiError(HttpResponseMessage response)
+    {
+        string rawError = await response.Content.ReadAsStringAsync();
+        string finalError = "An unknown error occurred.";
+
+        if (string.IsNullOrWhiteSpace(rawError))
+        {
+            ErrorMessage = finalError;
+            return;
+        }
+
+        try
+        {
+            using (JsonDocument doc = JsonDocument.Parse(rawError))
+            {
+                if (doc.RootElement.TryGetProperty("Message", out JsonElement messageElement))
+                {
+                    finalError = messageElement.GetString() ?? finalError;
+                }
+                else if (doc.RootElement.TryGetProperty("title", out JsonElement titleElement))
+                {
+                    finalError = titleElement.GetString() ?? finalError;
+                }
+                else
+                {
+                    finalError = rawError;
+                }
+            }
+        }
+        catch (JsonException)
+        {
+            finalError = rawError;
+        }
+        
+        ErrorMessage = finalError;
+    }
+}

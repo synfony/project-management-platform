@@ -1,0 +1,69 @@
+@page "/register"
+@using Assesment_tecnico.WebApp.Services
+@using Assesment_tecnico.Shared.Models
+@inject AuthService AuthService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Register</PageTitle>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Register</div>
+                <div class="card-body">
+                    @if (!string.IsNullOrEmpty(ErrorMessage))
+                    {
+                        <div class="alert alert-danger">@ErrorMessage</div>
+                    }
+
+                    <EditForm Model="@registerModel" OnValidSubmit="HandleRegister">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <InputText id="email" class="form-control" @bind-Value="registerModel.Email" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <InputText id="password" type="password" class="form-control" @bind-Value="registerModel.Password" />
+                        </div>
+                        <button type="submit" class="btn btn-primary">Register</button>
+                        <a href="login" class="btn btn-link">Already have an account? Login</a>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private RegisterModel registerModel = new();
+    private string? ErrorMessage;
+
+    private async Task HandleRegister()
+    {
+        ErrorMessage = null;
+        Console.WriteLine("HandleRegister method started.");
+        try
+        {
+            ErrorMessage = await AuthService.Register(registerModel);
+            if (ErrorMessage == null)
+            {
+                Console.WriteLine("Registration successful, navigating to dashboard.");
+                NavigationManager.NavigateTo("/dashboard", forceLoad: true);
+            }
+            else
+            {
+                Console.WriteLine($"Registration failed with message: {ErrorMessage}");
+            }
+        }
+        catch (Exception ex)
+        {
+            // This will catch network errors or other unexpected exceptions
+            ErrorMessage = $"A critical error occurred: {ex.Message}";
+            Console.WriteLine($"A critical exception was caught: {ex}");
+        }
+    }
+}

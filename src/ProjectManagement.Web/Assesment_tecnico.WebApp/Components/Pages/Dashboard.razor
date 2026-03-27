@@ -1,0 +1,77 @@
+@page "/dashboard"
+@using Assesment_tecnico.Shared.Models
+@using System.Net.Http.Json
+@inject HttpClient Http
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+
+<PageTitle>Dashboard</PageTitle>
+
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h1>Dashboard</h1>
+            <p class="text-muted">Overview of the platform statistics.</p>
+        </div>
+    </div>
+
+    @if (summary != null)
+    {
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card text-white bg-primary mb-3">
+                    <div class="card-header">Total Courses</div>
+                    <div class="card-body">
+                        <h2 class="card-title">@summary.TotalCourses</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-white bg-success mb-3">
+                    <div class="card-header">Published Courses</div>
+                    <div class="card-body">
+                        <h2 class="card-title">@summary.PublishedCourses</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-white bg-warning mb-3">
+                    <div class="card-header">Draft Courses</div>
+                    <div class="card-body">
+                        <h2 class="card-title">@summary.DraftCourses</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <p><em>Loading statistics...</em></p>
+    }
+</div>
+
+@code {
+    private DashboardSummary? summary;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // This is not ideal, as it makes many calls. A dedicated dashboard endpoint would be better.
+        // But for now, we'll make it work.
+        var courses = await Http.GetFromJsonAsync<PagedResult<Course>>("api/courses");
+        if (courses != null)
+        {
+            summary = new DashboardSummary
+            {
+                TotalCourses = courses.TotalItems,
+                PublishedCourses = courses.Items.Count(c => c.Status == CourseStatus.Published),
+                DraftCourses = courses.Items.Count(c => c.Status == CourseStatus.Draft)
+            };
+        }
+    }
+
+    public class DashboardSummary
+    {
+        public int TotalCourses { get; set; }
+        public int PublishedCourses { get; set; }
+        public int DraftCourses { get; set; }
+    }
+}

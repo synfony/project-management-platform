@@ -1,0 +1,56 @@
+@model ProjectManagement.Application.DTOs.PagedResult<ProjectManagement.Application.DTOs.ProjectDto>
+@{ ViewData["Title"] = "Projects"; }
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Projects</h2>
+    <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> New Project</a>
+</div>
+<form method="get" class="mb-4 row g-2 align-items-end">
+    <div class="col-auto">
+        <label class="form-label">Filter by Status</label>
+        <select name="status" class="form-select" onchange="this.form.submit()">
+            <option value="">All</option>
+            @foreach (var s in Enum.GetValues<ProjectStatus>())
+            {
+                <option value="@s" selected="@(ViewBag.CurrentStatus?.ToString() == s.ToString())">@s</option>
+            }
+        </select>
+    </div>
+</form>
+@if (!Model.Items.Any())
+{
+    <div class="alert alert-info">No projects found.</div>
+}
+else
+{
+<div class="row row-cols-1 row-cols-md-3 g-4">
+@foreach (var p in Model.Items)
+{
+    <div class="col">
+    <div class="card h-100 shadow-sm">
+    <div class="card-body">
+        <span class="badge @(p.Status == ProjectStatus.Active ? "bg-success" : p.Status == ProjectStatus.Completed ? "bg-secondary" : "bg-warning text-dark") float-end">@p.Status</span>
+        <h5 class="card-title">@p.Name</h5>
+        <p class="card-text text-muted">@p.Description</p>
+    </div>
+    <div class="card-footer d-flex gap-2">
+        <a asp-action="Details" asp-route-id="@p.Id" class="btn btn-sm btn-outline-primary">Details</a>
+        <a asp-action="Edit" asp-route-id="@p.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
+        <form asp-action="Delete" asp-route-id="@p.Id" method="post" onsubmit="return confirm('Delete this project?')">
+            <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+        </form>
+    </div>
+    </div>
+    </div>
+}
+</div>
+<nav class="mt-4">
+<ul class="pagination">
+    @for (int i = 1; i <= Model.TotalPages; i++)
+    {
+        <li class="page-item @(i == Model.Page ? "active" : "")">
+            <a class="page-link" asp-action="Index" asp-route-page="@i" asp-route-status="@ViewBag.CurrentStatus">@i</a>
+        </li>
+    }
+</ul>
+</nav>
+}

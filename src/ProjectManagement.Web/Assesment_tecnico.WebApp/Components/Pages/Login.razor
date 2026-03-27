@@ -1,0 +1,49 @@
+@page "/login"
+@using Assesment_tecnico.WebApp.Services
+@using Assesment_tecnico.Shared.Models
+@inject AuthService AuthService
+@inject NavigationManager NavigationManager
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Login</div>
+                <div class="card-body">
+                    @if (!string.IsNullOrEmpty(ErrorMessage))
+                    {
+                        <div class="alert alert-danger">@ErrorMessage</div>
+                    }
+
+                    <EditForm Model="@loginModel" OnValidSubmit="HandleLogin">
+                        <DataAnnotationsValidator />
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <InputText id="email" class="form-control" @bind-Value="loginModel.Email" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <InputText id="password" type="password" class="form-control" @bind-Value="loginModel.Password" />
+                        </div>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                        <a href="register" class="btn btn-link">Don't have an account? Register</a>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private LoginModel loginModel = new();
+    private string? ErrorMessage;
+
+    private async Task HandleLogin()
+    {
+        ErrorMessage = await AuthService.Login(loginModel);
+        if (ErrorMessage == null)
+        {
+            NavigationManager.NavigateTo("/dashboard", forceLoad: true);
+        }
+    }
+}

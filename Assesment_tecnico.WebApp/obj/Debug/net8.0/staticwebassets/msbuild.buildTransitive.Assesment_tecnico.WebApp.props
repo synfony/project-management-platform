@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../buildMultiTargeting/Assesment_tecnico.WebApp.props" />
+</Project>

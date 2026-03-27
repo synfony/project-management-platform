@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "Assesment_tecnico.Shared/1.0.0": {
+        "runtime": {
+          "Assesment_tecnico.Shared.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Assesment_tecnico.Shared/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

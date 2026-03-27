@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "dgSpecHash": "Xrww8VyyJp94jNHqNvFI3wP3uKBsnOo94ZakMCEI7t9G3eJk00drQXL7v64IaCTUty/u7MwKBNi2H7d57f5CaA==",
+  "success": true,
+  "projectFilePath": "/home/Coder/Descargas/Cursos-online/Assesment_tecnico.WebApp/Assesment_tecnico.WebApp.csproj",
+  "expectedPackageFiles": [
+    "/home/Coder/.nuget/packages/blazored.localstorage/4.5.0/blazored.localstorage.4.5.0.nupkg.sha512",
+    "/home/Coder/.nuget/packages/microsoft.aspnetcore.authorization/8.0.0/microsoft.aspnetcore.authorization.8.0.0.nupkg.sha512",
+    "/home/Coder/.nuget/packages/microsoft.aspnetcore.components/8.0.0/microsoft.aspnetcore.components.8.0.0.nupkg.sha512",
+    "/home/Coder/.nuget/packages/microsoft.aspnetcore.components.analyzers/8.0.0/microsoft.aspnetcore.components.analyzers.8.0.0.nupkg.sha512",
+    "/home/Coder/.nuget/packages/microsoft.aspnetcore.components.forms/8.0.0/microsoft.aspnetcore.components.forms.8.0.0.nupkg.sha512",
+    "/home/Coder/.nuget/packages/microsoft.aspnetcore.components.web/8.0.0/microsoft.aspnetcore.components.web.8.0.0.nupkg.sha512",
+    "/home/Coder/.nuget/packages/microsoft.aspnetcore.metadata/8.0.0/microsoft.aspnetcore.metadata.8.0.0.nupkg.sha512",
+    "/home/Coder/.nuget/packages/microsoft.extensions.dependencyinjection/8.0.0/microsoft.extensions.dependencyinjection.8.0.0.nupkg.sha512",
+    "/home/Coder/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/8.0.0/microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
+    "/home/Coder/.nuget/packages/microsoft.extensions.logging.abstractions/8.0.0/microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512",
+    "/home/Coder/.nuget/packages/microsoft.extensions.options/8.0.0/microsoft.extensions.options.8.0.0.nupkg.sha512",
+    "/home/Coder/.nuget/packages/microsoft.extensions.primitives/8.0.0/microsoft.extensions.primitives.8.0.0.nupkg.sha512",
+    "/home/Coder/.nuget/packages/microsoft.jsinterop/8.0.0/microsoft.jsinterop.8.0.0.nupkg.sha512",
+    "/home/Coder/.nuget/packages/system.io.pipelines/8.0.0/system.io.pipelines.8.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
