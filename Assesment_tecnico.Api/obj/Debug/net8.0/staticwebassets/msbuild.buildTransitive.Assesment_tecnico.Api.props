@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="../buildMultiTargeting/Assesment_tecnico.Api.props" />
-</Project>
