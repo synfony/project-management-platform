@@ -18,8 +18,7 @@ tests/
 ## Quick Start
 
 ```bash
-cd src/ProjectManagement.Web
-dotnet run
+dotnet run --project src/ProjectManagement.Web
 ```
 
 ## URLs
